@@ -1,0 +1,7 @@
+name,job,expected_status,test_type
+Nguyen Van A,Software Engineer,201,positive_create
+Tran Thi B,QA Tester,201,positive_create
+Le Van C,DevOps,201,positive_create
+,Developer,201,positive_empty_name
+Khang,Product Manager,201,positive_create
+Test User,Data Analyst,201,positive_create

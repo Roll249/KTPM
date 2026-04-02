@@ -1,0 +1,1031 @@
+{
+	"info": {
+		"_postman_id": "nhom5-api-testing",
+		"name": "Nhóm 5 - Kiểm thử API",
+		"description": "Bộ test API cho 3 hệ thống: Reqres.in, Restful-booker, Swagger Petstore",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Reqres.in",
+			"item": [
+				{
+					"name": "Auth Module",
+					"item": [
+						{
+							"name": "TC_REQ_07 - Đăng ký thành công",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// 1. Kiểm tra status code",
+											"pm.test(\"Status is 200 OK\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"// 2. Kiểm tra response time",
+											"pm.test(\"Response time < 500ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);",
+											"});",
+											"",
+											"// 3. Kiểm tra response có token",
+											"pm.test(\"Response contains token\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property('token');",
+											"});",
+											"",
+											"// 4. Lưu token vào environment",
+											"if (pm.response.code === 200) {",
+											"    var jsonData = pm.response.json();",
+											"    pm.environment.set(\"reqres_token\", jsonData.token);",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"eve.holt@reqres.in\",\n    \"password\": \"pistol\"\n}"
+								},
+								"url": {
+									"raw": "{{reqres_base_url}}/register",
+									"host": ["{{reqres_base_url}}"],
+									"path": ["register"]
+								}
+							}
+						},
+						{
+							"name": "TC_REQ_08 - Đăng ký thiếu password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is 400 Bad Request\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"Response time < 500ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);",
+											"});",
+											"",
+											"pm.test(\"Error message is Missing password\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.error).to.eql(\"Missing password\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"eve.holt@reqres.in\"\n}"
+								},
+								"url": {
+									"raw": "{{reqres_base_url}}/register",
+									"host": ["{{reqres_base_url}}"],
+									"path": ["register"]
+								}
+							}
+						},
+						{
+							"name": "TC_REQ_09 - Đăng nhập thành công",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is 200 OK\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response time < 500ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);",
+											"});",
+											"",
+											"pm.test(\"Response contains token\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property('token');",
+											"});",
+											"",
+											"// Lưu token",
+											"if (pm.response.code === 200) {",
+											"    var jsonData = pm.response.json();",
+											"    pm.environment.set(\"reqres_token\", jsonData.token);",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"eve.holt@reqres.in\",\n    \"password\": \"cityslicka\"\n}"
+								},
+								"url": {
+									"raw": "{{reqres_base_url}}/login",
+									"host": ["{{reqres_base_url}}"],
+									"path": ["login"]
+								}
+							}
+						},
+						{
+							"name": "TC_REQ_10 - Đăng nhập thiếu email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is 400 Bad Request\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"Response time < 500ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);",
+											"});",
+											"",
+											"pm.test(\"Error message about missing email\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.error).to.include(\"Missing\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"password\": \"cityslicka\"\n}"
+								},
+								"url": {
+									"raw": "{{reqres_base_url}}/login",
+									"host": ["{{reqres_base_url}}"],
+									"path": ["login"]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "User Module",
+					"item": [
+						{
+							"name": "TC_REQ_01 - Lấy danh sách users",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is 200 OK\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response time < 500ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);",
+											"});",
+											"",
+											"pm.test(\"Response contains data array\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property('data');",
+											"    pm.expect(jsonData.data).to.be.an('array');",
+											"});",
+											"",
+											"pm.test(\"Response has pagination info\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property('page');",
+											"    pm.expect(jsonData).to.have.property('total');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{reqres_base_url}}/users?page=1",
+									"host": ["{{reqres_base_url}}"],
+									"path": ["users"],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										}
+									]
+								}
+							}
+						},
+						{
+							"name": "TC_REQ_02 - Lấy single user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is 200 OK\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response time < 500ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);",
+											"});",
+											"",
+											"pm.test(\"Response contains user data\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property('data');",
+											"    pm.expect(jsonData.data).to.have.property('id');",
+											"    pm.expect(jsonData.data).to.have.property('email');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{reqres_base_url}}/users/2",
+									"host": ["{{reqres_base_url}}"],
+									"path": ["users", "2"]
+								}
+							}
+						},
+						{
+							"name": "TC_REQ_03 - Lấy user không tồn tại",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is 404 Not Found\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Response time < 500ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{reqres_base_url}}/users/999",
+									"host": ["{{reqres_base_url}}"],
+									"path": ["users", "999"]
+								}
+							}
+						},
+						{
+							"name": "TC_REQ_04 - Tạo user mới",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is 201 Created\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"pm.test(\"Response time < 500ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);",
+											"});",
+											"",
+											"pm.test(\"Response contains id and createdAt\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property('id');",
+											"    pm.expect(jsonData).to.have.property('createdAt');",
+											"});",
+											"",
+											"// Lưu user ID",
+											"if (pm.response.code === 201) {",
+											"    var jsonData = pm.response.json();",
+											"    pm.environment.set(\"created_user_id\", jsonData.id);",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Nguyen Van Khang\",\n    \"job\": \"QA Engineer\"\n}"
+								},
+								"url": {
+									"raw": "{{reqres_base_url}}/users",
+									"host": ["{{reqres_base_url}}"],
+									"path": ["users"]
+								}
+							}
+						},
+						{
+							"name": "TC_REQ_05 - Cập nhật user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is 200 OK\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response time < 500ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);",
+											"});",
+											"",
+											"pm.test(\"Response contains updatedAt\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property('updatedAt');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Updated Name\",\n    \"job\": \"Senior Developer\"\n}"
+								},
+								"url": {
+									"raw": "{{reqres_base_url}}/users/2",
+									"host": ["{{reqres_base_url}}"],
+									"path": ["users", "2"]
+								}
+							}
+						},
+						{
+							"name": "TC_REQ_06 - Xóa user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is 204 No Content\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});",
+											"",
+											"pm.test(\"Response time < 500ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{reqres_base_url}}/users/2",
+									"host": ["{{reqres_base_url}}"],
+									"path": ["users", "2"]
+								}
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "2. Restful-Booker",
+			"item": [
+				{
+					"name": "Auth Module",
+					"item": [
+						{
+							"name": "TC_BOOK_01 - Lấy token thành công",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is 200 OK\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response time < 500ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);",
+											"});",
+											"",
+											"pm.test(\"Response contains token\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property('token');",
+											"});",
+											"",
+											"// Lưu token vào environment",
+											"if (pm.response.code === 200) {",
+											"    var jsonData = pm.response.json();",
+											"    if (jsonData.token) {",
+											"        pm.environment.set(\"booker_token\", jsonData.token);",
+											"    }",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"password123\"\n}"
+								},
+								"url": {
+									"raw": "{{booker_base_url}}/auth",
+									"host": ["{{booker_base_url}}"],
+									"path": ["auth"]
+								}
+							}
+						},
+						{
+							"name": "TC_BOOK_02 - Lấy token sai credentials",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response time < 500ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);",
+											"});",
+											"",
+											"pm.test(\"Response shows bad credentials\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.reason).to.eql(\"Bad credentials\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"wronguser\",\n    \"password\": \"wrongpass\"\n}"
+								},
+								"url": {
+									"raw": "{{booker_base_url}}/auth",
+									"host": ["{{booker_base_url}}"],
+									"path": ["auth"]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Booking Module",
+					"item": [
+						{
+							"name": "TC_BOOK_03 - Lấy danh sách booking IDs",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is 200 OK\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response time < 500ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);",
+											"});",
+											"",
+											"pm.test(\"Response is an array\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.be.an('array');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{booker_base_url}}/booking",
+									"host": ["{{booker_base_url}}"],
+									"path": ["booking"]
+								}
+							}
+						},
+						{
+							"name": "TC_BOOK_04 - Lấy booking detail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is 200 OK\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response time < 500ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);",
+											"});",
+											"",
+											"pm.test(\"Response contains booking info\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property('firstname');",
+											"    pm.expect(jsonData).to.have.property('lastname');",
+											"    pm.expect(jsonData).to.have.property('totalprice');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{booker_base_url}}/booking/1",
+									"host": ["{{booker_base_url}}"],
+									"path": ["booking", "1"]
+								}
+							}
+						},
+						{
+							"name": "TC_BOOK_05 - Tạo booking mới",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is 200 OK\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response time < 500ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);",
+											"});",
+											"",
+											"pm.test(\"Response contains bookingid\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property('bookingid');",
+											"});",
+											"",
+											"// Lưu booking ID",
+											"if (pm.response.code === 200) {",
+											"    var jsonData = pm.response.json();",
+											"    pm.environment.set(\"created_booking_id\", jsonData.bookingid);",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"firstname\": \"Nguyen\",\n    \"lastname\": \"Van Khang\",\n    \"totalprice\": 150,\n    \"depositpaid\": true,\n    \"bookingdates\": {\n        \"checkin\": \"2024-01-01\",\n        \"checkout\": \"2024-01-05\"\n    },\n    \"additionalneeds\": \"Breakfast\"\n}"
+								},
+								"url": {
+									"raw": "{{booker_base_url}}/booking",
+									"host": ["{{booker_base_url}}"],
+									"path": ["booking"]
+								}
+							}
+						},
+						{
+							"name": "TC_BOOK_06 - Cập nhật booking",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is 200 OK\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response time < 500ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);",
+											"});",
+											"",
+											"pm.test(\"Response contains updated info\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.firstname).to.eql(\"Updated\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Cookie",
+										"value": "token={{booker_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"firstname\": \"Updated\",\n    \"lastname\": \"Name\",\n    \"totalprice\": 200,\n    \"depositpaid\": true,\n    \"bookingdates\": {\n        \"checkin\": \"2024-02-01\",\n        \"checkout\": \"2024-02-05\"\n    },\n    \"additionalneeds\": \"Lunch\"\n}"
+								},
+								"url": {
+									"raw": "{{booker_base_url}}/booking/{{created_booking_id}}",
+									"host": ["{{booker_base_url}}"],
+									"path": ["booking", "{{created_booking_id}}"]
+								}
+							}
+						},
+						{
+							"name": "TC_BOOK_07 - Xóa booking",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is 201 Created\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"pm.test(\"Response time < 500ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Cookie",
+										"value": "token={{booker_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{booker_base_url}}/booking/{{created_booking_id}}",
+									"host": ["{{booker_base_url}}"],
+									"path": ["booking", "{{created_booking_id}}"]
+								}
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "3. Swagger Petstore",
+			"item": [
+				{
+					"name": "Pet Module",
+					"item": [
+						{
+							"name": "TC_PET_01 - Thêm pet mới",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is 200 OK\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response time < 500ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);",
+											"});",
+											"",
+											"pm.test(\"Response contains pet info\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property('id');",
+											"    pm.expect(jsonData).to.have.property('name');",
+											"});",
+											"",
+											"// Lưu pet ID",
+											"if (pm.response.code === 200) {",
+											"    var jsonData = pm.response.json();",
+											"    pm.environment.set(\"created_pet_id\", jsonData.id);",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "api_key",
+										"value": "{{petstore_api_key}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": 1001,\n    \"category\": {\n        \"id\": 1,\n        \"name\": \"Cats\"\n    },\n    \"name\": \"Mèo Mướp\",\n    \"photoUrls\": [\"https://example.com/cat.jpg\"],\n    \"tags\": [\n        {\n            \"id\": 1,\n            \"name\": \"cute\"\n        }\n    ],\n    \"status\": \"available\"\n}"
+								},
+								"url": {
+									"raw": "{{petstore_base_url}}/pet",
+									"host": ["{{petstore_base_url}}"],
+									"path": ["pet"]
+								}
+							}
+						},
+						{
+							"name": "TC_PET_02 - Lấy pet theo ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is 200 OK\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response time < 500ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);",
+											"});",
+											"",
+											"pm.test(\"Response contains pet info\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property('id');",
+											"    pm.expect(jsonData).to.have.property('name');",
+											"    pm.expect(jsonData).to.have.property('status');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{petstore_base_url}}/pet/{{created_pet_id}}",
+									"host": ["{{petstore_base_url}}"],
+									"path": ["pet", "{{created_pet_id}}"]
+								}
+							}
+						},
+						{
+							"name": "TC_PET_03 - Lấy pet không tồn tại",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is 404 Not Found\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Response time < 500ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);",
+											"});",
+											"",
+											"pm.test(\"Error message is Pet not found\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.message).to.eql(\"Pet not found\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{petstore_base_url}}/pet/999999999",
+									"host": ["{{petstore_base_url}}"],
+									"path": ["pet", "999999999"]
+								}
+							}
+						},
+						{
+							"name": "TC_PET_04 - Tìm pet theo status",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is 200 OK\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response time < 500ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);",
+											"});",
+											"",
+											"pm.test(\"Response is an array of pets\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.be.an('array');",
+											"});",
+											"",
+											"pm.test(\"All pets have status available\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    jsonData.forEach(function(pet) {",
+											"        pm.expect(pet.status).to.eql(\"available\");",
+											"    });",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{petstore_base_url}}/pet/findByStatus?status=available",
+									"host": ["{{petstore_base_url}}"],
+									"path": ["pet", "findByStatus"],
+									"query": [
+										{
+											"key": "status",
+											"value": "available"
+										}
+									]
+								}
+							}
+						},
+						{
+							"name": "TC_PET_05 - Cập nhật pet",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is 200 OK\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response time < 500ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);",
+											"});",
+											"",
+											"pm.test(\"Response contains updated info\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.name).to.eql(\"Updated Pet Name\");",
+											"    pm.expect(jsonData.status).to.eql(\"sold\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "api_key",
+										"value": "{{petstore_api_key}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": {{created_pet_id}},\n    \"category\": {\n        \"id\": 1,\n        \"name\": \"Cats\"\n    },\n    \"name\": \"Updated Pet Name\",\n    \"photoUrls\": [\"https://example.com/cat.jpg\"],\n    \"tags\": [\n        {\n            \"id\": 1,\n            \"name\": \"cute\"\n        }\n    ],\n    \"status\": \"sold\"\n}"
+								},
+								"url": {
+									"raw": "{{petstore_base_url}}/pet",
+									"host": ["{{petstore_base_url}}"],
+									"path": ["pet"]
+								}
+							}
+						},
+						{
+							"name": "TC_PET_06 - Xóa pet",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is 200 OK\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response time < 500ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "api_key",
+										"value": "{{petstore_api_key}}"
+									}
+								],
+								"url": {
+									"raw": "{{petstore_base_url}}/pet/{{created_pet_id}}",
+									"host": ["{{petstore_base_url}}"],
+									"path": ["pet", "{{created_pet_id}}"]
+								}
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

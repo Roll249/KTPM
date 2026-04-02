@@ -1,0 +1,8 @@
+email,password,expected_status,test_type
+eve.holt@reqres.in,cityslicka,200,positive_login
+eve.holt@reqres.in,pistol,200,positive_register
+eve.holt@reqres.in,wrongpass,400,negative_wrong_password
+,cityslicka,400,negative_missing_email
+eve.holt@reqres.in,,400,negative_missing_password
+invalidemail,password123,400,negative_invalid_email
+test@test.com,123,400,negative_user_not_found

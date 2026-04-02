@@ -1,0 +1,6 @@
+username,password,expected_token,test_type
+admin,password123,true,positive_auth
+wronguser,wrongpass,false,negative_bad_credentials
+admin,wrongpassword,false,negative_wrong_password
+,password123,false,negative_missing_username
+admin,,false,negative_missing_password

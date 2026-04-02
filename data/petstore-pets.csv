@@ -1,0 +1,6 @@
+pet_id,pet_name,status,category_name,expected_status,test_type
+1001,Mèo Mướp,available,Cats,200,positive_create
+1002,Chó Phú Quốc,pending,Dogs,200,positive_create
+1003,Cá Koi,sold,Fish,200,positive_create
+1004,Hamster Vàng,available,Hamsters,200,positive_create
+999999999,NotExist,available,Cats,404,negative_not_found
