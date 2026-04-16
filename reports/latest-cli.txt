@@ -53,4 +53,249 @@ Sub-folder TC_REQ_04 - Tạo user mới
  20. Response contains id and createdAt
 
 Sub-folder TC_REQ_05 - Cập nhật user
-  PUT https://reqres.in/api/users/2 
+  PUT https://reqres.in/api/users/2 [401 Unauthorized, 2.61kB, 421ms]
+ 21. Status is 200 OK
+  Pass  Response time < 500ms
+ 22. Response contains updatedAt
+
+Sub-folder TC_REQ_06 - Xóa user
+  DELETE https://reqres.in/api/users/2 [401 Unauthorized, 2.61kB, 425ms]
+ 23. Status is 204 No Content
+  Pass  Response time < 500ms
+
+Folder 2. Restful-Booker / Auth Module
+Sub-folder TC_BOOK_01 - Lấy token thành công
+  POST https://restful-booker.herokuapp.com/auth [200 OK, 766B, 1344ms]
+  Pass  Status is 200 OK
+ 24. Response time < 500ms
+  Pass  Response contains token
+
+Sub-folder TC_BOOK_02 - Lấy token sai credentials
+  POST https://restful-booker.herokuapp.com/auth [200 OK, 767B, 272ms]
+  Pass  Status is 200
+  Pass  Response time < 500ms
+  Pass  Response shows bad credentials
+
+Folder 2. Restful-Booker / Booking Module
+Sub-folder TC_BOOK_03 - Lấy danh sách booking IDs
+  GET https://restful-booker.herokuapp.com/booking [200 OK, 39.17kB, 1272ms]
+  Pass  Status is 200 OK
+ 25. Response time < 500ms
+  Pass  Response is an array
+
+Sub-folder TC_BOOK_04 - Lấy booking detail
+  GET https://restful-booker.herokuapp.com/booking/1 [200 OK, 917B, 358ms]
+  Pass  Status is 200 OK
+  Pass  Response time < 500ms
+  Pass  Response contains booking info
+
+Sub-folder TC_BOOK_05 - Tạo booking mới
+  POST https://restful-booker.herokuapp.com/booking [200 OK, 944B, 294ms]
+  Pass  Status is 200 OK
+  Pass  Response time < 500ms
+  Pass  Response contains bookingid
+
+Sub-folder TC_BOOK_06 - Cập nhật booking
+  PUT https://restful-booker.herokuapp.com/booking/3023 [200 OK, 907B, 341ms]
+  Pass  Status is 200 OK
+  Pass  Response time < 500ms
+  Pass  Response contains updated info
+
+Sub-folder TC_BOOK_07 - Xóa booking
+  DELETE https://restful-booker.herokuapp.com/booking/3023 [201 Created, 743B, 297ms]
+  Pass  Status is 201 Created
+  Pass  Response time < 500ms
+
+Folder 3. Swagger Petstore / Pet Module
+Sub-folder TC_PET_01 - Thêm pet mới
+  POST https://petstore.swagger.io/v2/pet [200 OK, 490B, 1508ms]
+  Pass  Status is 200 OK
+ 26. Response time < 500ms
+  Pass  Response contains pet info
+
+Sub-folder TC_PET_02 - Lấy pet theo ID
+  GET https://petstore.swagger.io/v2/pet/1001 [200 OK, 490B, 389ms]
+  Pass  Status is 200 OK
+  Pass  Response time < 500ms
+  Pass  Response contains pet info
+
+Sub-folder TC_PET_03 - Lấy pet không tồn tại
+  GET https://petstore.swagger.io/v2/pet/999999999 [404 Not Found, 384B, 279ms]
+  Pass  Status is 404 Not Found
+  Pass  Response time < 500ms
+  Pass  Error message is Pet not found
+
+Sub-folder TC_PET_04 - Tìm pet theo status
+  GET https://petstore.swagger.io/v2/pet/findByStatus?status=available [200 OK, 302.34kB, 2s]
+  Pass  Status is 200 OK
+ 27. Response time < 500ms
+  Pass  Response is an array of pets
+  Pass  All pets have status available
+
+Sub-folder TC_PET_05 - Cập nhật pet
+  PUT https://petstore.swagger.io/v2/pet [200 OK, 489B, 392ms]
+  Pass  Status is 200 OK
+  Pass  Response time < 500ms
+  Pass  Response contains updated info
+
+Sub-folder TC_PET_06 - Xóa pet
+  DELETE https://petstore.swagger.io/v2/pet/1001 [200 OK, 372B, 284ms]
+  Pass  Status is 200 OK
+  Pass  Response time < 500ms
+
+-------------------------------------------------------------------
+|                         |          executed |            failed |
+--------------------------+-------------------+--------------------
+|              iterations |                 1 |                 0 |
+--------------------------+-------------------+--------------------
+|                requests |                23 |                 0 |
+--------------------------+-------------------+--------------------
+|            test-scripts |                23 |                 0 |
+--------------------------+-------------------+--------------------
+|      prerequest-scripts |                 0 |                 0 |
+--------------------------+-------------------+--------------------
+|              assertions |                67 |                27 |
+-------------------------------------------------------------------
+| total run duration: 14.6s                                       |
+-------------------------------------------------------------------
+| total data received: 350.34kB (approx)                          |
+-------------------------------------------------------------------
+| average response time: 620ms [min: 272ms, max: 2s, s.d.: 472ms] |
+-------------------------------------------------------------------
+
+[31m   # [39m[31m failure        [39m[31m detail                                                                               [39m
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 01.  AssertionError  Status is 200 OK                                                                     
+                      expected response to have status code 200 but got 401                                
+                      at assertion:0 in test-script                                                        
+                      inside "1. Reqres.in / Auth Module / TC_REQ_07 - Đăng ký thành công"                 
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 02.  AssertionError  Response time < 500ms                                                                
+                      expected 879 to be below 500                                                         
+                      at assertion:1 in test-script                                                        
+                      inside "1. Reqres.in / Auth Module / TC_REQ_07 - Đăng ký thành công"                 
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 03.  AssertionError  Response contains token                                                              
+                      expected { error: 'missing_api_key', …(6) } to have property 'token'                 
+                      at assertion:2 in test-script                                                        
+                      inside "1. Reqres.in / Auth Module / TC_REQ_07 - Đăng ký thành công"                 
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 04.  AssertionError  Status is 400 Bad Request                                                            
+                      expected response to have status code 400 but got 401                                
+                      at assertion:0 in test-script                                                        
+                      inside "1. Reqres.in / Auth Module / TC_REQ_08 - Đăng ký thiếu password"             
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 05.  AssertionError  Error message is Missing password                                                    
+                      expected 'missing_api_key' to deeply equal 'Missing password'                        
+                      at assertion:2 in test-script                                                        
+                      inside "1. Reqres.in / Auth Module / TC_REQ_08 - Đăng ký thiếu password"             
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 06.  AssertionError  Status is 200 OK                                                                     
+                      expected response to have status code 200 but got 401                                
+                      at assertion:0 in test-script                                                        
+                      inside "1. Reqres.in / Auth Module / TC_REQ_09 - Đăng nhập thành công"               
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 07.  AssertionError  Response time < 500ms                                                                
+                      expected 522 to be below 500                                                         
+                      at assertion:1 in test-script                                                        
+                      inside "1. Reqres.in / Auth Module / TC_REQ_09 - Đăng nhập thành công"               
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 08.  AssertionError  Response contains token                                                              
+                      expected { error: 'missing_api_key', …(6) } to have property 'token'                 
+                      at assertion:2 in test-script                                                        
+                      inside "1. Reqres.in / Auth Module / TC_REQ_09 - Đăng nhập thành công"               
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 09.  AssertionError  Status is 400 Bad Request                                                            
+                      expected response to have status code 400 but got 401                                
+                      at assertion:0 in test-script                                                        
+                      inside "1. Reqres.in / Auth Module / TC_REQ_10 - Đăng nhập thiếu email"              
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 10.  AssertionError  Error message about missing email                                                    
+                      expected 'missing_api_key' to include 'Missing'                                      
+                      at assertion:2 in test-script                                                        
+                      inside "1. Reqres.in / Auth Module / TC_REQ_10 - Đăng nhập thiếu email"              
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 11.  AssertionError  Status is 200 OK                                                                     
+                      expected response to have status code 200 but got 401                                
+                      at assertion:0 in test-script                                                        
+                      inside "1. Reqres.in / User Module / TC_REQ_01 - Lấy danh sách users"                
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 12.  AssertionError  Response contains data array                                                         
+                      expected { error: 'missing_api_key', …(6) } to have property 'data'                  
+                      at assertion:2 in test-script                                                        
+                      inside "1. Reqres.in / User Module / TC_REQ_01 - Lấy danh sách users"                
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 13.  AssertionError  Response has pagination info                                                         
+                      expected { error: 'missing_api_key', …(6) } to have property 'page'                  
+                      at assertion:3 in test-script                                                        
+                      inside "1. Reqres.in / User Module / TC_REQ_01 - Lấy danh sách users"                
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 14.  AssertionError  Status is 200 OK                                                                     
+                      expected response to have status code 200 but got 401                                
+                      at assertion:0 in test-script                                                        
+                      inside "1. Reqres.in / User Module / TC_REQ_02 - Lấy single user"                    
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 15.  AssertionError  Response time < 500ms                                                                
+                      expected 691 to be below 500                                                         
+                      at assertion:1 in test-script                                                        
+                      inside "1. Reqres.in / User Module / TC_REQ_02 - Lấy single user"                    
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 16.  AssertionError  Response contains user data                                                          
+                      expected { error: 'missing_api_key', …(6) } to have property 'data'                  
+                      at assertion:2 in test-script                                                        
+                      inside "1. Reqres.in / User Module / TC_REQ_02 - Lấy single user"                    
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 17.  AssertionError  Status is 404 Not Found                                                              
+                      expected response to have status code 404 but got 401                                
+                      at assertion:0 in test-script                                                        
+                      inside "1. Reqres.in / User Module / TC_REQ_03 - Lấy user không tồn tại"             
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 18.  AssertionError  Response time < 500ms                                                                
+                      expected 685 to be below 500                                                         
+                      at assertion:1 in test-script                                                        
+                      inside "1. Reqres.in / User Module / TC_REQ_03 - Lấy user không tồn tại"             
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 19.  AssertionError  Status is 201 Created                                                                
+                      expected response to have status code 201 but got 401                                
+                      at assertion:0 in test-script                                                        
+                      inside "1. Reqres.in / User Module / TC_REQ_04 - Tạo user mới"                       
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 20.  AssertionError  Response contains id and createdAt                                                   
+                      expected { error: 'missing_api_key', …(6) } to have property 'id'                    
+                      at assertion:2 in test-script                                                        
+                      inside "1. Reqres.in / User Module / TC_REQ_04 - Tạo user mới"                       
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 21.  AssertionError  Status is 200 OK                                                                     
+                      expected response to have status code 200 but got 401                                
+                      at assertion:0 in test-script                                                        
+                      inside "1. Reqres.in / User Module / TC_REQ_05 - Cập nhật user"                      
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 22.  AssertionError  Response contains updatedAt                                                          
+                      expected { error: 'missing_api_key', …(6) } to have property 'updatedAt'             
+                      at assertion:2 in test-script                                                        
+                      inside "1. Reqres.in / User Module / TC_REQ_05 - Cập nhật user"                      
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 23.  AssertionError  Status is 204 No Content                                                             
+                      expected response to have status code 204 but got 401                                
+                      at assertion:0 in test-script                                                        
+                      inside "1. Reqres.in / User Module / TC_REQ_06 - Xóa user"                           
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 24.  AssertionError  Response time < 500ms                                                                
+                      expected 1344 to be below 500                                                        
+                      at assertion:1 in test-script                                                        
+                      inside "2. Restful-Booker / Auth Module / TC_BOOK_01 - Lấy token thành công"         
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 25.  AssertionError  Response time < 500ms                                                                
+                      expected 1272 to be below 500                                                        
+                      at assertion:1 in test-script                                                        
+                      inside "2. Restful-Booker / Booking Module / TC_BOOK_03 - Lấy danh sách booking IDs" 
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 26.  AssertionError  Response time < 500ms                                                                
+                      expected 1508 to be below 500                                                        
+                      at assertion:1 in test-script                                                        
+                      inside "3. Swagger Petstore / Pet Module / TC_PET_01 - Thêm pet mới"                 
+[90m     [39m[90m                [39m[90m                                                                                      [39m
+ 27.  AssertionError  Response time < 500ms                                                                
+                      expected 2097 to be below 500                                                        
+                      at assertion:1 in test-script                                                        
+                      inside "3. Swagger Petstore / Pet Module / TC_PET_04 - Tìm pet theo status"          
