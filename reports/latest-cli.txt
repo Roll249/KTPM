@@ -1,0 +1,56 @@
+newman
+
+Nhóm 5 - Kiểm thử API
+
+Folder 1. Reqres.in / Auth Module
+Sub-folder TC_REQ_07 - Đăng ký thành công
+  POST https://reqres.in/api/register [401 Unauthorized, 2.65kB, 879ms]
+  1. Status is 200 OK
+  2. Response time < 500ms
+  3. Response contains token
+
+Sub-folder TC_REQ_08 - Đăng ký thiếu password
+  POST https://reqres.in/api/register [401 Unauthorized, 2.65kB, 408ms]
+  4. Status is 400 Bad Request
+  Pass  Response time < 500ms
+  5. Error message is Missing password
+
+Sub-folder TC_REQ_09 - Đăng nhập thành công
+  POST https://reqres.in/api/login [401 Unauthorized, 2.65kB, 522ms]
+  6. Status is 200 OK
+  7. Response time < 500ms
+  8. Response contains token
+
+Sub-folder TC_REQ_10 - Đăng nhập thiếu email
+  POST https://reqres.in/api/login [401 Unauthorized, 2.65kB, 352ms]
+  9. Status is 400 Bad Request
+  Pass  Response time < 500ms
+ 10. Error message about missing email
+
+Folder 1. Reqres.in / User Module
+Sub-folder TC_REQ_01 - Lấy danh sách users
+  GET https://reqres.in/api/users?page=1 [401 Unauthorized, 2.61kB, 402ms]
+ 11. Status is 200 OK
+  Pass  Response time < 500ms
+ 12. Response contains data array
+ 13. Response has pagination info
+
+Sub-folder TC_REQ_02 - Lấy single user
+  GET https://reqres.in/api/users/2 [401 Unauthorized, 2.61kB, 691ms]
+ 14. Status is 200 OK
+ 15. Response time < 500ms
+ 16. Response contains user data
+
+Sub-folder TC_REQ_03 - Lấy user không tồn tại
+  GET https://reqres.in/api/users/999 [401 Unauthorized, 2.61kB, 685ms]
+ 17. Status is 404 Not Found
+ 18. Response time < 500ms
+
+Sub-folder TC_REQ_04 - Tạo user mới
+  POST https://reqres.in/api/users [401 Unauthorized, 2.61kB, 351ms]
+ 19. Status is 201 Created
+  Pass  Response time < 500ms
+ 20. Response contains id and createdAt
+
+Sub-folder TC_REQ_05 - Cập nhật user
+  PUT https://reqres.in/api/users/2 
